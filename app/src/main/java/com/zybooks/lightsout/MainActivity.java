@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private int mLightOnColor;
     private int mLightOffColor;
     private final String GAME_STATE = "gameState";
+    private int mLightOnColorId;
+
 
 
     @Override
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mLightOnColorId = R.color.yellow;
         mLightGrid = findViewById(R.id.light_grid);
 
         // Add the same click handler to all grid buttons
@@ -139,7 +142,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onChangeColorClick(View view) {
+        // Send the current color ID to ColorActivity
         Intent intent = new Intent(this, ColorActivity.class);
+        intent.putExtra(ColorActivity.EXTRA_COLOR, mLightOnColorId);
         mColorResultLauncher.launch(intent);
     }
 
@@ -151,8 +156,9 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            int colorId = data.getIntExtra(ColorActivity.EXTRA_COLOR, R.color.yellow);
-                            mLightOnColor = ContextCompat.getColor(MainActivity.this, colorId);
+                            // Create the "on" button color from the chosen color ID from ColorActivity
+                            mLightOnColorId = data.getIntExtra(ColorActivity.EXTRA_COLOR, R.color.yellow);
+                            mLightOnColor = ContextCompat.getColor(MainActivity.this, mLightOnColorId);
                             setButtonColors();
                         }
                     }

@@ -14,6 +14,31 @@ public class ColorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color);
+
+        // Get the color ID from MainActivity
+        Intent intent = getIntent();
+        int colorId = intent.getIntExtra(EXTRA_COLOR, R.color.yellow);
+
+        // Select the radio button matching the color ID
+        int radioId = R.id.radio_yellow;
+        if (colorId == R.color.red) {
+            radioId = R.id.radio_red;
+        }
+        else if (colorId == R.color.orange) {
+            radioId = R.id.radio_orange;
+        }
+        else if (colorId == R.color.green) {
+            radioId = R.id.radio_green;
+        }
+        else if (colorId == R.color.blue_500) {
+            radioId = R.id.radio_blue;
+        }
+        else if (colorId == R.color.purple) {
+            radioId = R.id.radio_purple;
+        }
+
+        RadioButton radio = findViewById(radioId);
+        radio.setChecked(true);
     }
 
     public void onColorSelected(View view) {
