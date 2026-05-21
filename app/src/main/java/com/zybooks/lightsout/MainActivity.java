@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -16,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mLightGrid;
     private int mLightOnColor;
     private int mLightOffColor;
+    private final String GAME_STATE = "gameState";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,22 @@ public class MainActivity extends AppCompatActivity {
         mLightOffColor = ContextCompat.getColor(this, R.color.black);
 
         mGame = new LightsOutGame();
-        startGame();
+        if (savedInstanceState == null) {
+            startGame();
+        }
+        else {
+            String gameState = savedInstanceState.getString(GAME_STATE);
+            mGame.setState(gameState);
+            setButtonColors();
+        }
     }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(GAME_STATE, mGame.getState());
+    }
+
+
 
     private void startGame() {
         mGame.newGame();
