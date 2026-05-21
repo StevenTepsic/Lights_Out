@@ -1,5 +1,7 @@
 package com.zybooks.lightsout;
 
+import static com.zybooks.lightsout.LightsOutGame.GRID_SIZE;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
             gridButton.setOnClickListener(this::onLightButtonClick);
         }
 
+        //cheat
+        for (int buttonIndex = 0; buttonIndex < mLightGrid.getChildCount(); buttonIndex++) {
+            Button gridButton = (Button) mLightGrid.getChildAt(buttonIndex);
+            gridButton.setOnLongClickListener(this::onLongButtonClick);
+        }
+
         mLightOnColor = ContextCompat.getColor(this, R.color.yellow);
         mLightOffColor = ContextCompat.getColor(this, R.color.black);
 
@@ -40,12 +48,28 @@ public class MainActivity extends AppCompatActivity {
         setButtonColors();
     }
 
+    private boolean onLongButtonClick(View view) {
+        // Find the button's row and col
+        int buttonIndex = mLightGrid.indexOfChild(view);
+        int row = buttonIndex / GRID_SIZE;
+        int col = buttonIndex % GRID_SIZE;
+
+        if (row == 0 && col == 0) {
+            setAllButtonColors();
+        }
+
+        // Congratulate the user if the game is over
+        if (mGame.isGameOver()) {
+            Toast.makeText(this, R.string.congrats, Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
     private void onLightButtonClick(View view) {
 
         // Find the button's row and col
         int buttonIndex = mLightGrid.indexOfChild(view);
-        int row = buttonIndex / LightsOutGame.GRID_SIZE;
-        int col = buttonIndex % LightsOutGame.GRID_SIZE;
+        int row = buttonIndex / GRID_SIZE;
+        int col = buttonIndex % GRID_SIZE;
 
         mGame.selectLight(row, col);
         setButtonColors();
@@ -56,14 +80,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void setButtonColors() {
 
         for (int buttonIndex = 0; buttonIndex < mLightGrid.getChildCount(); buttonIndex++) {
             Button gridButton = (Button) mLightGrid.getChildAt(buttonIndex);
 
             // Find the button's row and col
-            int row = buttonIndex / LightsOutGame.GRID_SIZE;
-            int col = buttonIndex % LightsOutGame.GRID_SIZE;
+            int row = buttonIndex / GRID_SIZE;
+            int col = buttonIndex % GRID_SIZE;
 
             if (mGame.isLightOn(row, col)) {
                 gridButton.setBackgroundColor(mLightOnColor);
@@ -71,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
                 gridButton.setBackgroundColor(mLightOffColor);
             }
         }
+    }
+
+    private void setAllButtonColors() {
+        mGame.turnAllOff();
+        setButtonColors(); // reuse your existing method — no need to duplicate the loop
     }
 
     public void onNewGameClick(View view) {
