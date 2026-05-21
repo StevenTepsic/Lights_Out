@@ -1,24 +1,42 @@
 package com.zybooks.lightsout;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.view.View;
+import android.widget.RadioButton;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class ColorActivity extends AppCompatActivity {
+
+    public static final String EXTRA_COLOR = "com.zybooks.lightsout.color";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_color);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    }
+
+    public void onColorSelected(View view) {
+        int colorId = R.color.yellow;
+        if (view.getId() == R.id.radio_red) {
+            colorId = R.color.red;
+        }
+        else if (view.getId() == R.id.radio_orange) {
+            colorId = R.color.orange;
+        }
+        else if (view.getId() == R.id.radio_green) {
+            colorId = R.color.green;
+        }
+        else if (view.getId() == R.id.radio_blue) {
+            colorId = R.color.blue_500;
+        }
+        else if (view.getId() == R.id.radio_purple) {
+            colorId = R.color.purple;
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_COLOR, colorId);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
