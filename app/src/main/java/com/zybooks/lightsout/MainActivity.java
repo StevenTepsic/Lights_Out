@@ -2,6 +2,7 @@ package com.zybooks.lightsout;
 
 import static com.zybooks.lightsout.LightsOutGame.GRID_SIZE;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
         if (mGame.isGameOver()) {
             Toast.makeText(this, R.string.congrats, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onHelpClick(View view) {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
     }
 
 
