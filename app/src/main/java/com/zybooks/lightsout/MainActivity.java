@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private int mLightOffColor;
     private final String GAME_STATE = "gameState";
     private int mLightOnColorId;
+    private final String lightOnColorId = "lightOnColorId";
 
 
 
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         else {
             String gameState = savedInstanceState.getString(GAME_STATE);
             mGame.setState(gameState);
+            mLightOnColorId = Integer.parseInt(savedInstanceState.getString(lightOnColorId));
+            mLightOnColor = ContextCompat.getColor(this, mLightOnColorId);
             setButtonColors();
         }
     }
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(GAME_STATE, mGame.getState());
+        outState.putString(lightOnColorId, String.valueOf(mLightOnColorId));
     }
 
 
